@@ -1,46 +1,49 @@
-import unittest
 import math
+import unittest
 from src.logica.EcuacionSegundoGrado import EcuacionSegundoGrado
+
 class PruebaEcuacionSegundoGrado(unittest.TestCase):
-    def test_ecuacionSegundoGrado_parametrosNumericos_raicesReales(self):
-        # arrange
-        a = 3
-        b = -5
-        c = 1
-        x1Esperado = 1.43
-        x2Esperado = 0.23
+    def test_solucionESG_parametrosNumericos_raicesReales(self):
+        # Arrange
+        ecuacionSegundoGrado=EcuacionSegundoGrado()
+        parametroA = 3
+        parametroB = -5
+        parametroC = 1
+
+        RaizEsperada1 = "1.43"
+        RaizEsperada2 = "0.23"
 
         # Do
-        ecuacion = EcuacionSegundoGrado()
-        x1Actual, x2Actual = ecuacion.calculoECS(a, b, c)
-
+        ecuacionSegundoGrado.definirParametros(parametroA, parametroB, parametroC)
+        RaizActual1, RaizActual2 = ecuacionSegundoGrado.solucionESG()
 
         # Assert
-        precision = math.fabs(x1Esperado - x1Actual)
-        self.assertLessEqual(precision,0.01)
-        precision = math.fabs(x2Esperado - x2Actual)
-        self.assertLessEqual(precision, 0.01)
+        self.assertEqual(RaizEsperada1, RaizActual1)
+        self.assertEqual(RaizEsperada2, RaizActual2)
 
-    def test_ecuacionSegundoGrado_parametrosNumericosMultiple_raicesReales(self):
-        # arragbe
-        ecuacion = EcuacionSegundoGrado()
-        items = (
-            {"Case": "Caso 01", "a": 3, "b": -5, "c": 1, "RaizEsperada1": 1.43, "RaizEsperada2": 0.23},
-            {"Case": "Caso 02", "a": 1, "b": 2, "c": 1, "RaizEsperada1": -1.00, "RaizEsperada2": -1.00},
-            {"Case": "Caso 03", "a": -1, "b": 2, "c": -1, "RaizEsperada1": 1.0, "RaizEsperada2": 1.00},
-            {"Case": "Caso 04", "a": 1, "b": 0, "c": -18, "RaizEsperada1": 4.2, "RaizEsperada2": -4.24},
-            {"Case": "Caso 05", "a": 1, "b": 4, "c": 0, "RaizEsperada1": 0.0, "RaizEsperada2": -4.00},
-            {"Case": "Caso 06", "a": 1, "b": 4, "c": 4, "RaizEsperada1": -2.0, "RaizEsperada2": -2.00},
-            {"Case": "Caso 07", "a": 1, "b": 3, "c": 2, "RaizEsperada1": -1.0, "RaizEsperada2": -2.00},
-        )
+    def test_solucionESG_parametrosNumericos_raicesComplejasConjugadas(self):
+        # Arrange
+        ecuacionSegundoGrado = EcuacionSegundoGrado()
+        parametroA = 1
+        parametroB = 2
+        parametroC = 3
 
-        # do
-        for item in items:
-            with self.subTest(item["Case"]):
-                RaizActual1, RaizActual2 = ecuacion.calculoECS(item["a"], item["b"], item["c"])
+        RaizEsperada1 = "-1.00+1.41i"
+        RaizEsperada2 = "-1.00-1.41i"
 
-        # assert
-        precision = math.fabs(item["RaizEsperada1"] - RaizActual1)
-        self.assertLessEqual(precision, 0.01)
-        precision = math.fabs(item["RaizEsperada2"] - RaizActual2)
-        self.assertLessEqual(precision, 0.01)
+        # Do
+        ecuacionSegundoGrado.definirParametros(parametroA, parametroB, parametroC)
+        RaizActual1, RaizActual2 = ecuacionSegundoGrado.solucionESG()
+
+        # Assert
+        self.assertEqual(RaizEsperada1, RaizActual1)
+        self.assertEqual(RaizEsperada2, RaizActual2)
+
+    def test_solucionESG_parametrosNoNumericos_lanzaException(self):
+        # Arrange
+        ecuacionSegundoGrado = EcuacionSegundoGrado()
+
+        # Assert
+        self.assertTrue(True)
+        with self.assertRaises(ValueError):
+            ecuacionSegundoGrado.definirParametros("3.1", "2", "c")
