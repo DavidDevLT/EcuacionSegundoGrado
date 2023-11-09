@@ -15,9 +15,7 @@ class EcuacionSegundoGrado:
             try:
                 parametro = float ( parametro )
             except ValueError :
-                # raise ValueError("El parámetro no se puede convertir a float")
                 print(f"El parámetro: \"{parametro}\" no se puede convertir a float")
-                #exit(0)
                 raise
         return parametro
 
